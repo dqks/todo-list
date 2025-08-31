@@ -11,8 +11,6 @@ export const tasksAPI = baseApi.injectEndpoints({
         }),
     })
 })
-
-
 //query for me
 // me: build.query({
 //     query: () => ({
