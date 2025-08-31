@@ -1,5 +1,5 @@
-import {Header} from "../../modules/Header/components/Header/Header.tsx";
-import {Footer} from "../../modules/Footer/components/Footer/Footer.tsx";
+import {Header} from "../../modules/Header";
+import {Footer} from "../../modules/Footer";
 import {Tasks} from "../../modules/Tasks";
 
 export const TodoPage = () => {

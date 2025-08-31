@@ -1,14 +1,18 @@
 import {type Action, combineReducers, configureStore, type ThunkAction} from "@reduxjs/toolkit";
 import { footerReducer } from "../modules/Footer";
 import { taskReducer } from "../modules/Tasks";
+import { baseApi } from "../api"
 
 const reducers = combineReducers({
     footerReducer,
-    taskReducer
+    taskReducer,
+    [baseApi.reducerPath]: baseApi.reducer,
 })
 
 export const store = configureStore({
-    reducer: reducers
+    reducer: reducers,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 export type AppStore = typeof store
