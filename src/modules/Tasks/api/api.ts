@@ -9,6 +9,13 @@ export const tasksAPI = baseApi.injectEndpoints({
             }),
             providesTags: () => ["Task"]
         }),
+        deleteTask: build.mutation<void, string>({
+            query: (id: string) => ({
+                url: `/todo-lists/${id}` ,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Task"]
+        })
     })
 })
 //query for me

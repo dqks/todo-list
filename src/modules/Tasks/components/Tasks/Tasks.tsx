@@ -1,23 +1,25 @@
 import { Task } from "../Task/Task.tsx";
 import type { TaskType } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
+import { Preloader } from "../../../../ui/Preloader/Preloader.tsx";
+import { useCallback } from "react";
 
 export const Tasks = () => {
-    const {data: tasks} = tasksAPI.useFetchAllTasksQuery()
+    const {data: tasks, isLoading} = tasksAPI.useFetchAllTasksQuery()
+    const [deleteTask] = tasksAPI.useDeleteTaskMutation()
 
-    // const [createTask] = tasksAPI.useCreateTaskMutation()
-    //
-    // console.log(tasks);
-    //
-    // const handleCreate = async () => {
-    //     const text = "NEW TASK TEXT"
-    //     const task = await createTask({title: text});
-    //     console.log(task);
-    // }
+    //TODO добавить индикацию, что сейчас удалится таска
+    const deleteTaskHandler = useCallback((id: string) => {
+        deleteTask(id)
+    }, [deleteTask])
 
     return (
         <div>
-            {tasks?.map((task: TaskType) => <Task title={task.title} key={task.id}/>)}
+            {
+                isLoading
+                    ? <Preloader style={{width: "300px", height: "300px"}}/>
+                    : tasks?.map((task: TaskType) => <Task id={task.id} onClick={deleteTaskHandler} title={task.title} key={task.id}/>)
+            }
         </div>
     )
 }

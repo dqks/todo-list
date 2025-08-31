@@ -1,9 +1,10 @@
 import classes from "./Button.module.css"
+import type { CSSProperties } from "react";
 
 type ButtonProps = {
     children: React.ReactNode
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
-    style?: object
+    style?: CSSProperties
 }
 
 export const Button = ({children, style, onClick} : ButtonProps) => {

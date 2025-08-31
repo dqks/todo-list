@@ -1,18 +1,18 @@
-import {Button} from "../../../../ui/Button/Button.tsx";
+import { Button } from "../../../../ui/Button/Button.tsx";
 import classes from "./Task.module.css"
 
 type TaskProps = {
     title: string
-    id?: number
+    id: string
+    onClick: (id: string) => void
 }
 
-export const Task = ({title} : TaskProps) => {
+export const Task = ({title, id, onClick}: TaskProps) => {
     return (
         <div className={classes.taskWrapper}>
             <p>{title}</p>
             <div className={classes.actionWrapper}>
-                {/*<input type="checkbox"/>*/}
-                <Button>DONE</Button>
+                <Button onClick={() => onClick(id)}>DONE</Button>
             </div>
         </div>
     )
