@@ -6,12 +6,14 @@ export const tasksAPI = baseApi.injectEndpoints({
         fetchAllTasks: build.query<TaskType[], void>({
             query: () => ({
                 url: "/todo-lists",
-            })
+            }),
+            providesTags: () => ["Task"]
         }),
     })
 })
 
 
+//query for me
 // me: build.query({
 //     query: () => ({
 //         url: "/auth/me",

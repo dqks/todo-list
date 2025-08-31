@@ -1,13 +1,11 @@
 import { Button } from "../../../../ui/Button/Button.tsx";
 import classes from "./Footer.module.css"
 import { useState } from "react";
-import { useAppDispatch } from "../../../../hooks/redux.ts";
-import { newTaskTextAdded } from "../../store/slice.ts";
+import { footerApi } from "../../api/api.ts";
 
 export const Footer = () => {
     const [inputValue, setInputValue] = useState("");
-
-    const dispatch = useAppDispatch();
+    const [createTask] = footerApi.useCreateTaskMutation()
 
     return (
         <footer className={classes.footerWrapper}>
@@ -17,7 +15,7 @@ export const Footer = () => {
             </div>
             <Button onClick={() => {
                 if (inputValue !== "") {
-                    dispatch(newTaskTextAdded(inputValue))
+                    createTask({title: inputValue})
                     setInputValue("")
                 }
             }}>Add</Button>

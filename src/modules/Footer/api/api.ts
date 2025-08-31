@@ -8,7 +8,8 @@ export const footerApi = baseApi.injectEndpoints({
                 url: "/todo-lists",
                 method: "POST",
                 body: string
-            })
+            }),
+            invalidatesTags: ['Task']
         })
     })
 })
