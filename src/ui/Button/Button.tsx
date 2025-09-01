@@ -6,11 +6,16 @@ type ButtonProps = {
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
     style?: CSSProperties
     disabled?: boolean
+    type?: "submit" | "reset" | "button"
 }
 
-export const Button = ({children, style, onClick, disabled} : ButtonProps) => {
+export const Button = ({children, style, onClick, disabled, type}: ButtonProps) => {
     return (
-        <button disabled={disabled} onClick={onClick} className={classes.button} style={style}>
+        <button type={type}
+            disabled={disabled}
+            onClick={onClick}
+            className={classes.button}
+            style={style}>
             {children}
         </button>
     )
