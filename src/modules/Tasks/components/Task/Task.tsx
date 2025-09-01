@@ -5,14 +5,15 @@ type TaskProps = {
     title: string
     id: string
     onClick: (id: string) => void
+    deletingTaskInProgress: string[]
 }
 
-export const Task = ({title, id, onClick}: TaskProps) => {
+export const Task = ({title, id, onClick, deletingTaskInProgress}: TaskProps) => {
     return (
         <div className={classes.taskWrapper}>
             <p>{title}</p>
             <div className={classes.actionWrapper}>
-                <Button onClick={() => onClick(id)}>DONE</Button>
+                <Button disabled={deletingTaskInProgress.some(userId => userId === id)} onClick={() => onClick(id)}>DONE</Button>
             </div>
         </div>
     )
