@@ -7,12 +7,11 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux.ts";
 import { getDeletingTasksInProgress } from "../../store/selectors.ts";
 
 export const Tasks = () => {
-    const {data: tasks, isLoading} = tasksAPI.useFetchAllTasksQuery()
+    const {data: tasks, isFetching} = tasksAPI.useFetchAllTasksQuery()
     const [deleteTask] = tasksAPI.useDeleteTaskMutation()
     const deletingTaskInProgress = useAppSelector(getDeletingTasksInProgress)
     const dispatch = useAppDispatch();
 
-    //TODO кнопка становится активной в самый последний момент перед удалением
     const deleteTaskHandler = useCallback((id: string) => {
         dispatch(taskIsDeleting(true, id))
         deleteTask(id).then(() => {
@@ -20,11 +19,12 @@ export const Tasks = () => {
         })
     }, [deleteTask, dispatch])
 
+
     return (
         <div>
             {
-                isLoading
-                    ? <Preloader style={{width: "300px", height: "300px"}}/>
+                isFetching
+                    ? <Preloader style={{width: "100px", height: "100px"}}/>
                     : tasks?.map((task: TaskType) => <Task
                         deletingTaskInProgress={deletingTaskInProgress}
                         id={task.id}
