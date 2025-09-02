@@ -1,4 +1,15 @@
+.authTitle {
+    padding: 10px;
+}
+
 .inputWrapper {
     display: flex;
     flex-direction: column;
+}
+
+.checkboxWrapper {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
 }

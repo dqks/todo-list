@@ -11,6 +11,6 @@ export const baseApi = createApi({
         },
         credentials: "include"
     }),
-    tagTypes: ['Task'],
+    tagTypes: ['Task', 'Auth'],
     endpoints: () => ({})
 })

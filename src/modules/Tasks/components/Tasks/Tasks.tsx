@@ -19,7 +19,6 @@ export const Tasks = () => {
         })
     }, [deleteTask, dispatch])
 
-
     return (
         <div>
             {

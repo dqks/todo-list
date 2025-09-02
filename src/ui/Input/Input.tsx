@@ -7,10 +7,11 @@ type InputType = {
     name?: string
     style?: CSSProperties
     onChange? :  (e: React.ChangeEvent<HTMLInputElement>) => void
-    value?: number | string
+    value?: number | string | boolean
+    id?: string
 }
 
-export const Input = ({type, placeholder, name, style, onChange, value}: InputType) => {
+export const Input = ({type, placeholder, name, style, onChange, value, id}: InputType) => {
     return (
         <>
             <input className={classes.input}
@@ -20,6 +21,7 @@ export const Input = ({type, placeholder, name, style, onChange, value}: InputTy
                 style={style}
                 onChange={onChange}
                 value={value}
+                id={id}
             />
         </>
     )
