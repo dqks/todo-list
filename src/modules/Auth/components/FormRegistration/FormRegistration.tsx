@@ -2,7 +2,7 @@ import classes from "./FormRegistration.module.css"
 import { Button } from "../../../../ui/Button/Button.tsx";
 import { Input } from "../../../../ui/Input/Input.tsx";
 import { Controller, useForm } from "react-hook-form";
-import { authAPI } from "../../api/api.ts";
+import { authAPI, type LoginRequest } from "../../api/api.ts";
 
 export const FormRegistration = () => {
     const {
@@ -14,34 +14,44 @@ export const FormRegistration = () => {
             email: "",
             password: "",
             rememberMe: false,
+            captcha: ""
         }})
 
     const [login] = authAPI.useLoginMutation()
-    const onSubmit = (data: any) => {
-        login(data)
-        console.log(data)
+    const onSubmit = (data: LoginRequest) => {
+        login(data).then((response) => {
+            console.log(response)
+        })
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className={classes.wrapper}>
             <h1 className={classes.authTitle}>You're not <br/> authorized</h1>
             <div className={classes.inputWrapper}>
-                <label htmlFor="login">Login</label>
+                <label htmlFor="login">Email</label>
                 <Controller
                     name={"email"}
                     control={control}
+                    rules={{
+                        required: true,
+                    }}
                     render={({field}) =>
                         <Input id={"email"} type={"text"} {...field}/>
                     }/>
+                {errors?.email && <p className={classes.errorText}>Email is required</p>}
             </div>
             <div className={classes.inputWrapper}>
                 <label htmlFor="password">Password</label>
                 <Controller
                     name={"password"}
                     control={control}
+                    rules={{
+                        required: true,
+                    }}
                     render={({field}) =>
                         <Input {...field} id={"password"} type={"password"}/>
                     }/>
+                {errors?.password && <p className={classes.errorText}>Password is required</p>}
             </div>
             <div className={classes.checkboxWrapper}>
                 <label htmlFor="rememberMe">Remember me</label>
@@ -51,6 +61,15 @@ export const FormRegistration = () => {
                     render={({field}) =>
                         <Input {...field} id={"rememberMe"} type={"checkbox"}/>
                     }/>
+            </div>
+            <div className={classes.captchaWrapper}>
+                <img src="" alt="Captcha Image"/>
+                <Controller
+                    control={control}
+                    name={"captcha"}
+                    render={({field}) =>
+                        <Input {...field} id={"captcha"} type={"text"}/>
+                }/>
             </div>
             <Button style={{margin: "5px 0"}} type={"submit"}>Log In</Button>
         </form>

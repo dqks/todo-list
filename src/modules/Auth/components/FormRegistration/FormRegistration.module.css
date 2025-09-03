@@ -13,3 +13,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.errorText {
+    color: red;
+    margin: 0;
+    padding: 0;
+}
