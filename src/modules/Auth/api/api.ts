@@ -14,7 +14,7 @@ export type LoginRequest = {
     email: string
     password: string
     rememberMe?: boolean
-    captcha?: boolean
+    captcha?: string
 }
 
 type LoginResponse = {
