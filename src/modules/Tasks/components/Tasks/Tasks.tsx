@@ -24,12 +24,14 @@ export const Tasks = () => {
             {
                 isFetching
                     ? <Preloader style={{width: "100px", height: "100px"}}/>
-                    : tasks?.map((task: TaskType) => <Task
-                        deletingTaskInProgress={deletingTaskInProgress}
-                        id={task.id}
-                        onClick={deleteTaskHandler} title={task.title}
-                        key={task.id}
-                    />)
+                    : tasks?.length !== 0
+                        ? tasks?.map((task: TaskType) => <Task
+                            order={task.order}
+                            deletingTaskInProgress={deletingTaskInProgress}
+                            id={task.id}
+                            onClick={deleteTaskHandler} title={task.title}
+                            key={task.id}/>)
+                        : <h2> There are no tasks ... yet</h2>
             }
         </div>
     )
