@@ -3,6 +3,10 @@ import { Button } from "../../../../ui/Button/Button.tsx";
 import { Input } from "../../../../ui/Input/Input.tsx";
 import { Controller, useForm } from "react-hook-form";
 import { authAPI, type LoginRequest } from "../../api/api.ts";
+import { useSelector } from "react-redux";
+import { getCaptchaUrl } from "../../store/selectors.ts";
+import { useAppDispatch } from "../../../../hooks/redux.ts";
+import { getCaptcha } from "../../store/slice.ts";
 
 export const FormRegistration = () => {
     const {
@@ -16,11 +20,15 @@ export const FormRegistration = () => {
             rememberMe: false,
             captcha: ""
         }})
-
     const [login] = authAPI.useLoginMutation()
+    const captchaUrl = useSelector(getCaptchaUrl)
+    const dispatch = useAppDispatch();
+
     const onSubmit = (data: LoginRequest) => {
         login(data).then((response) => {
-            console.log(response)
+            if (response.data?.resultCode === 10) {
+                dispatch(getCaptcha())
+            }
         })
     }
 
@@ -62,15 +70,17 @@ export const FormRegistration = () => {
                         <Input {...field} id={"rememberMe"} type={"checkbox"}/>
                     }/>
             </div>
-            <div className={classes.captchaWrapper}>
-                <img src="" alt="Captcha Image"/>
-                <Controller
-                    control={control}
-                    name={"captcha"}
-                    render={({field}) =>
-                        <Input {...field} id={"captcha"} type={"text"}/>
-                }/>
-            </div>
+            {captchaUrl && (
+                <div className={classes.captchaWrapper}>
+                    <img className={classes.captchaImg} src={captchaUrl} alt="Captcha Image"/>
+                    <Controller
+                        control={control}
+                        name={"captcha"}
+                        render={({field}) =>
+                            <Input {...field} id={"captcha"} type={"text"}/>
+                        }/>
+                </div>
+            )}
             <Button style={{margin: "5px 0"}} type={"submit"}>Log In</Button>
         </form>
     )

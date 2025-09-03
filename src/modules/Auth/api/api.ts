@@ -13,8 +13,8 @@ type AuthResponse = {
 export type LoginRequest = {
     email: string
     password: string
-    rememberMe?: boolean
-    captcha?: string
+    rememberMe: boolean
+    captcha: string
 }
 
 type LoginResponse = {
@@ -51,10 +51,10 @@ export const authAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Auth"]
         }),
-        getCaptchaUrl: build.query<string, void>({
-            query: () => ({
-                url: "/security/get-captcha-url"
-            })
-        })
+        // getCaptchaUrl: build.query<CaptchaResponse, void>({
+        //     query: () => ({
+        //         url: "/security/get-captcha-url"
+        //     })
+        // })
     })
 })

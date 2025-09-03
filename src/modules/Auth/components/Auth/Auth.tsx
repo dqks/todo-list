@@ -9,7 +9,6 @@ type AuthProps = {
 
 export const Auth = ({children}: AuthProps) => {
     const {data: checkAuth, isLoading} = authAPI.useIsAuthQuery()
-
     return (
         <div>
             {
