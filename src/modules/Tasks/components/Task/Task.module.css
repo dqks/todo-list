@@ -6,7 +6,8 @@
     padding: 5px;
     max-width: 800px;
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    justify-content: space-around;
 }
