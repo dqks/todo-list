@@ -49,12 +49,16 @@ export const authAPI = baseApi.injectEndpoints({
                     captcha
                 }
             }),
-            invalidatesTags: ["Auth"]
+            //плохая практика, нужно не делать запрос при каждой попытки логина,
+            // но за неимением других идей пока что так
+            invalidatesTags: ["Auth", "Task"]
         }),
-        // getCaptchaUrl: build.query<CaptchaResponse, void>({
-        //     query: () => ({
-        //         url: "/security/get-captcha-url"
-        //     })
-        // })
+        logout: build.mutation<void, void>({
+            query: () => ({
+                url: "/auth/logout",
+                method: "POST"
+            }),
+            invalidatesTags: ["Auth"]
+        })
     })
 })

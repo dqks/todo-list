@@ -12,13 +12,15 @@ export const FormRegistration = () => {
     const {
         formState: {errors},
         handleSubmit,
-        control
+        control,
+        setError
     } = useForm({
         defaultValues: {
             email: "",
             password: "",
             rememberMe: false,
-            captcha: ""
+            captcha: "",
+            generalError: ""
         }})
     const [login] = authAPI.useLoginMutation()
     const captchaUrl = useSelector(getCaptchaUrl)
@@ -28,6 +30,9 @@ export const FormRegistration = () => {
         login(data).then((response) => {
             if (response.data?.resultCode === 10) {
                 dispatch(getCaptcha())
+            } else if (response.data?.resultCode === 1) {
+                setError("generalError",
+                    {type: "server", message: response.data?.messages.join("/n")})
             }
         })
     }
@@ -82,6 +87,13 @@ export const FormRegistration = () => {
                 </div>
             )}
             <Button style={{margin: "5px 0"}} type={"submit"}>Log In</Button>
+            {errors.generalError && (
+                <div>
+                    <p className={classes.errorText}>
+                        {errors.generalError.message}
+                    </p>
+                </div>
+            )}
         </form>
     )
 }

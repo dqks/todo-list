@@ -24,7 +24,7 @@ export const Tasks = () => {
             {
                 isFetching
                     ? <Preloader style={{width: "100px", height: "100px"}}/>
-                    : tasks?.length !== 0
+                    : tasks?.length !== 0 && tasks
                         ? tasks?.map((task: TaskType) => <Task
                             order={task.order}
                             deletingTaskInProgress={deletingTaskInProgress}
