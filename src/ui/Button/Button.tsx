@@ -10,7 +10,6 @@ type ButtonProps = {
 }
 
 export const Button = ({children, style, onClick, disabled, type}: ButtonProps) => {
-    console.log("BUTTON RENDEr")
     return (
         <button type={type}
             disabled={disabled}

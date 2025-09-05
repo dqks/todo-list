@@ -9,10 +9,7 @@ type FormDataType = {
 
 export const AddTaskForm = () => {
     const [createTask] = footerApi.useCreateTaskMutation()
-    const {
-        handleSubmit,
-        control,
-    } = useForm({
+    const {handleSubmit, control, reset} = useForm({
         defaultValues: {
             taskText: "",
         }
@@ -20,6 +17,7 @@ export const AddTaskForm = () => {
 
     const onSubmit = (data: FormDataType) => {
         createTask({title: data.taskText})
+        reset()
     }
 
     return (

@@ -1,3 +1,9 @@
+.buttonsWrapper {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
 .taskWrapper {
     border: 1px solid mediumpurple;
     border-left: 0;
