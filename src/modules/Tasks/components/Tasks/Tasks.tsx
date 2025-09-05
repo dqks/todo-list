@@ -20,29 +20,31 @@ export const Tasks = () => {
         })
     }, [deleteTask, dispatch])
 
-    const reorderTaskHandler = useCallback((id: string, task : TaskType) => {
+    const reorderTaskHandler = useCallback((id: string, task: TaskType | null) => {
         if (task) {
             console.log(task)
             reorderTasks({
                 todoListId: id,
                 putAfterItemId: task.id
             });
-        } else {
-            console.log("Task is undefined")
+        } else if (task === null) {
+            reorderTasks({
+                todoListId: id,
+                putAfterItemId: null
+            });
         }
-
     }, [reorderTasks])
-
-    //previousTask - стрелка вниз
     //nextTask - стрелка вверх
-
+    //previousTask - стрелка вниз
     return (
         <div>
             {
                 isFetching
                     ? <Preloader style={{width: "100px", height: "100px"}}/>
                     : tasks?.length !== 0 && tasks
-                        ? tasks?.map((task: TaskType, index : number) => <Task
+                        ? tasks?.map((task: TaskType,
+                            index: number) => <Task
+                            taskIndex={index}
                             previousTask={tasks[index + 1]}
                             nextTask={tasks[index - 2]}
                             order={task.order}
