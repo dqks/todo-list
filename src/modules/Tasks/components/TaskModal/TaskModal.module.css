@@ -1,0 +1,10 @@
+.formWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.taskText {
+    font-size: 20px;
+}

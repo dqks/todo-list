@@ -17,3 +17,10 @@
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
 }
+
+.taskWrapper:hover {
+    border: 1px solid magenta;
+    border-left: 0;
+    border-right: 0;
+    opacity: 0.4;
+}

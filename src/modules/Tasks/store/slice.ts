@@ -8,13 +8,13 @@ export type TaskType = {
 }
 
 type TaskInitialState = {
-    tasks: TaskType[],
     deletingTaskInProgress: string[]
+    selectedTask: TaskType | null
 }
 
 const initialState: TaskInitialState = {
-    tasks: [],
-    deletingTaskInProgress: []
+    deletingTaskInProgress: [],
+    selectedTask: null
 }
 
 export const taskSlice = createSlice({
@@ -32,9 +32,12 @@ export const taskSlice = createSlice({
                 userId: string) => {
                 return {payload: {isFetching, userId}}
             }
+        },
+        setSelectedTask: (state, action: PayloadAction<TaskType | null>) => {
+            state.selectedTask = action.payload
         }
     },
 })
 
-export const {taskIsDeleting} = taskSlice.actions;
+export const {taskIsDeleting, setSelectedTask} = taskSlice.actions;
 export const taskReducer = taskSlice.reducer
