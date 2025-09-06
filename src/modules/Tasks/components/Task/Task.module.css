@@ -19,8 +19,7 @@
 }
 
 .taskWrapper:hover {
-    border: 1px solid magenta;
+    border: 1px solid #ff00ff;
     border-left: 0;
     border-right: 0;
-    opacity: 0.4;
 }

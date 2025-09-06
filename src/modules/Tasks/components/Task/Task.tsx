@@ -34,17 +34,26 @@ export const Task = memo(({
         <div onClick={() => onTaskClick({id, addedDate, order: 1, title} as TaskType)}
             className={classes.taskWrapper}>
             <div className={classes.buttonsWrapper}>
-                <Button onClick={() => onArrowClick(id, nextTask, taskIndex)}>
+                <Button onClick={(e) => {
+                    e.stopPropagation()
+                    onArrowClick(id, nextTask, taskIndex)
+                }}>
                     &uarr;
                 </Button>
-                <Button onClick={() => onArrowClick(id, previousTask, taskIndex)}>
+                <Button onClick={(e) => {
+                    e.stopPropagation()
+                    onArrowClick(id, previousTask, taskIndex)
+                }}>
                     &darr;
                 </Button>
             </div>
             <p>{title}</p>
             <div className={classes.actionWrapper}>
                 <Button disabled={deletingTaskInProgress.some(userId => userId === id)}
-                    onClick={() => onDoneClick(id)}>DONE</Button>
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onDoneClick(id)
+                    }}>DONE</Button>
             </div>
         </div>
     )

@@ -26,7 +26,6 @@ export const Tasks = () => {
         task: TaskType | null,
         taskIndex: number) => {
         if (taskIndex !== 1 && task) {
-            console.log(task)
             reorderTasks({
                 todoListId: id,
                 putAfterItemId: task.id
