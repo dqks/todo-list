@@ -1,12 +1,12 @@
 import { type Action, combineReducers, configureStore, type ThunkAction } from "@reduxjs/toolkit";
 import { footerReducer } from "../modules/Footer";
-import { taskReducer } from "../modules/Tasks";
+import { todoListReducer } from "../modules/Tasks";
 import { baseApi } from "../api"
 import { authReducer } from "../modules/Auth";
 
 const reducers = combineReducers({
     footerReducer,
-    taskReducer,
+    todoListReducer,
     authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
 })

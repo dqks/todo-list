@@ -3,50 +3,57 @@ import { Input } from "../../../../ui/Input/Input.tsx";
 import type { CSSProperties } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../../../../ui/Button/Button.tsx";
-import classes from "./TaskModal.module.css"
+import classes from "./TodoListModal.module.css"
 import { useAppDispatch } from "../../../../hooks/redux.ts";
-import { setSelectedTask } from "../../store/slice.ts";
+import { todoListIsEdited } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
 
-type TaskModalProps = {
-    taskText: string;
-    taskId: string;
+type TodoListModalProps = {
+    todoListTitle: string;
+    todoListId: string;
 }
 
-const TaskModelCSS = {
+const TodoListModelCSS = {
     width: "500px",
-    height: "400px",
+    height: "300px",
     justifyContent: "center",
 } as CSSProperties
 
 type FormDataType = {
-    taskText: string;
+    todoListTitle: string;
 }
 
-export const TaskModal = ({taskText, taskId}: TaskModalProps) => {
-    const [editTask] = tasksAPI.useEditTaskMutation()
+export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) => {
+    const [editTodoList] = tasksAPI.useEditTodoListTitleMutation()
+    const [deleteTodoList] = tasksAPI.useDeleteTodoListMutation()
+
     const {control, handleSubmit} = useForm({
         defaultValues: {
-            taskText: taskText,
+            todoListTitle: todoListTitle,
         }
     })
     const dispatch = useAppDispatch();
 
     const onSubmit = (data: FormDataType) => {
         console.log(data)
-        editTask({
-            todoListId: taskId,
-            title: data.taskText,
+        editTodoList({
+            todoListId: todoListId,
+            title: data.todoListTitle,
         })
-        dispatch(setSelectedTask(null))
+        dispatch(todoListIsEdited(null))
     }
 
     const onButtonClick = () => {
-        dispatch(setSelectedTask(null))
+        dispatch(todoListIsEdited(null))
+    }
+
+    const onDeleteClick = () => {
+        deleteTodoList(todoListId)
+        dispatch(todoListIsEdited(null))
     }
 
     return (
-        <Modal contentStyle={TaskModelCSS}>
+        <Modal contentStyle={TodoListModelCSS}>
             <form className={classes.formWrapper} onSubmit={handleSubmit(onSubmit)}>
                 <Button
                     style={{position: "relative", bottom: "40px", left: "260px"}}
@@ -54,10 +61,9 @@ export const TaskModal = ({taskText, taskId}: TaskModalProps) => {
                 >
                     &#10006;
                 </Button>
-                <h1>Edit Task</h1>
-                <p className={classes.taskText}>Task Text</p>
+                <h1>Edit TODO List</h1>
                 <Controller
-                    name={"taskText"}
+                    name={"todoListTitle"}
                     control={control}
                     rules={{
                         required: true,
@@ -66,6 +72,12 @@ export const TaskModal = ({taskText, taskId}: TaskModalProps) => {
                         <Input type="text" {...field}/>
                     }/>
                 <Button type="submit">Edit</Button>
+                <Button onClick={onDeleteClick}
+                    type="button"
+                    style={{border: "1px solid red"}}
+                >
+                    Delete TODO List
+                </Button>
             </form>
         </Modal>
     )

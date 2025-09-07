@@ -1,2 +1,2 @@
-export { Tasks } from "./components/Tasks/Tasks.tsx"
-export { taskReducer } from "./store/slice.ts"
+export { TodoLists } from "./components/TodoLists/TodoLists.tsx"
+export { todoListReducer } from "./store/slice.ts"

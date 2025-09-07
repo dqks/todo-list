@@ -1,4 +1,4 @@
-import type { TaskType } from "../store/slice.ts";
+import type { TodoListType } from "../store/slice.ts";
 import { baseApi } from "../../../api";
 
 type ReorderType = {
@@ -6,27 +6,27 @@ type ReorderType = {
     putAfterItemId: string | null
 }
 
-type EditTaskType = {
+type EditTodoListType = {
     todoListId: string
     title: string
 }
 
 export const tasksAPI = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        fetchAllTasks: build.query<TaskType[], void>({
+        fetchAllTodoLists: build.query<TodoListType[], void>({
             query: () => ({
                 url: "/todo-lists",
             }),
             providesTags: () => ["Task"]
         }),
-        deleteTask: build.mutation<void, string>({
+        deleteTodoList: build.mutation<void, string>({
             query: (id: string) => ({
                 url: `/todo-lists/${id}` ,
                 method: "DELETE"
             }),
             invalidatesTags: ["Task"]
         }),
-        reorderTasks: build.mutation<void, ReorderType>({
+        reorderTodoList: build.mutation<void, ReorderType>({
             query: ({
                 todoListId,
                 putAfterItemId
@@ -39,7 +39,7 @@ export const tasksAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Task"]
         }),
-        editTask: build.mutation<void, EditTaskType>({
+        editTodoListTitle: build.mutation<void, EditTodoListType>({
             query: ({
                 todoListId,
                 title,
@@ -51,6 +51,11 @@ export const tasksAPI = baseApi.injectEndpoints({
                 }
             }),
             invalidatesTags: ["Task"]
+        }),
+        getTasksPortions: build.query<void, string>({
+            query: (todoListId) => ({
+                url: `/todo-lists/${todoListId}/tasks`
+            })
         })
     })
 })

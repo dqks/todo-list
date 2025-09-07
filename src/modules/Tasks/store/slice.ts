@@ -1,43 +1,34 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type TaskType = {
+export type TodoListType = {
     id: string
     addedDate: Date
     order: number
     title: string
 }
 
-type TaskInitialState = {
-    deletingTaskInProgress: string[]
-    selectedTask: TaskType | null
+type TodoListsInitialState = {
+    editedTodoList: TodoListType | null
+    shownTasksFromList: TodoListType | null
 }
 
-const initialState: TaskInitialState = {
-    deletingTaskInProgress: [],
-    selectedTask: null
+const initialState: TodoListsInitialState = {
+    editedTodoList: null,
+    shownTasksFromList: null
 }
 
-export const taskSlice = createSlice({
-    name: "task",
+export const todoListSlice = createSlice({
+    name: "todoLists",
     initialState,
     reducers: {
-        taskIsDeleting: {
-            reducer: (state,
-                action: PayloadAction<{ isFetching: boolean, userId: string }>) => {
-                state.deletingTaskInProgress = action.payload.isFetching
-                    ? [...state.deletingTaskInProgress, action.payload.userId]
-                    : state.deletingTaskInProgress.filter(id => id !== action.payload.userId)
-            },
-            prepare: (isFetching: boolean,
-                userId: string) => {
-                return {payload: {isFetching, userId}}
-            }
+        todoListIsEdited: (state, action: PayloadAction<TodoListType | null>) => {
+            state.editedTodoList = action.payload
         },
-        setSelectedTask: (state, action: PayloadAction<TaskType | null>) => {
-            state.selectedTask = action.payload
+        tasksAreShows: (state, action: PayloadAction<TodoListType | null>) => {
+            state.editedTodoList = action.payload
         }
     },
 })
 
-export const {taskIsDeleting, setSelectedTask} = taskSlice.actions;
-export const taskReducer = taskSlice.reducer
+export const {todoListIsEdited, tasksAreShows} = todoListSlice.actions;
+export const todoListReducer = todoListSlice.reducer
