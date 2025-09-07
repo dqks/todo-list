@@ -22,9 +22,7 @@ export const Tasks = () => {
         })
     }, [deleteTask, dispatch])
 
-    const reorderTaskHandler = useCallback((id: string,
-        task: TaskType | null,
-        taskIndex: number) => {
+    const reorderTaskHandler = useCallback((id: string, task: TaskType | null, taskIndex: number) => {
         if (taskIndex !== 1 && task) {
             reorderTasks({
                 todoListId: id,
@@ -51,7 +49,7 @@ export const Tasks = () => {
                     ? <Preloader style={{width: "100px", height: "100px"}}/>
                     : tasks?.length !== 0 && tasks
                         ? <>
-                            {selectedTask && <TaskModal taskText={selectedTask.title}/>}
+                            {selectedTask && <TaskModal taskText={selectedTask.title} taskId={selectedTask.id}/>}
                             {tasks?.map((task: TaskType,
                                 index: number) => <Task
                                 onTaskClick={taskClickHandler}

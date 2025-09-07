@@ -7,13 +7,8 @@ type ReorderType = {
 }
 
 type EditTaskType = {
+    todoListId: string
     title: string
-    description: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: Date
-    deadline: Date
 }
 
 export const tasksAPI = baseApi.injectEndpoints({
@@ -45,10 +40,17 @@ export const tasksAPI = baseApi.injectEndpoints({
             invalidatesTags: ["Task"]
         }),
         editTask: build.mutation<void, EditTaskType>({
-            query: () => ({
-                url: "/todo-lists/{todolistId}/tasks/{taskId}",
-                method: "POST"
-            })
+            query: ({
+                todoListId,
+                title,
+            }) => ({
+                url: `/todo-lists/${todoListId}`,
+                method: "PUT",
+                body: {
+                    title,
+                }
+            }),
+            invalidatesTags: ["Task"]
         })
     })
 })

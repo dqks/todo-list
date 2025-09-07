@@ -6,9 +6,11 @@ import { Button } from "../../../../ui/Button/Button.tsx";
 import classes from "./TaskModal.module.css"
 import { useAppDispatch } from "../../../../hooks/redux.ts";
 import { setSelectedTask } from "../../store/slice.ts";
+import { tasksAPI } from "../../api/api.ts";
 
 type TaskModalProps = {
     taskText: string;
+    taskId: string;
 }
 
 const TaskModelCSS = {
@@ -21,7 +23,8 @@ type FormDataType = {
     taskText: string;
 }
 
-export const TaskModal = ({taskText}: TaskModalProps) => {
+export const TaskModal = ({taskText, taskId}: TaskModalProps) => {
+    const [editTask] = tasksAPI.useEditTaskMutation()
     const {control, handleSubmit} = useForm({
         defaultValues: {
             taskText: taskText,
@@ -31,6 +34,10 @@ export const TaskModal = ({taskText}: TaskModalProps) => {
 
     const onSubmit = (data: FormDataType) => {
         console.log(data)
+        editTask({
+            todoListId: taskId,
+            title: data.taskText,
+        })
         dispatch(setSelectedTask(null))
     }
 
