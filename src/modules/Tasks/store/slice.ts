@@ -9,6 +9,7 @@ export type TodoListType = {
 
 type TodoListsInitialState = {
     editedTodoList: TodoListType | null
+    //id from todolist
     shownTasksFromList: string | null
 }
 

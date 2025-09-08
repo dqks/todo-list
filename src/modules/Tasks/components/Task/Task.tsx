@@ -1,7 +1,17 @@
 import classes from "./Task.module.css"
 
-export const Task = () => {
+type TaskType = {
+    id: string
+    title: string
+    description: string
+}
+
+export const Task = ({id, title, description} : TaskType) => {
     return (
-        <div></div>
+        <div>
+            <p>
+                {description}
+            </p>
+        </div>
     )
 }

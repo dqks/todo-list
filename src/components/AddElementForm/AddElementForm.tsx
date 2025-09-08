@@ -1,22 +1,24 @@
-import { Input } from "../../../../ui/Input/Input.tsx";
-import { Button } from "../../../../ui/Button/Button.tsx";
-import { footerApi } from "../../api/api.ts";
 import { Controller, useForm } from "react-hook-form";
+import { Input } from "../../ui/Input/Input.tsx";
+import { Button } from "../../ui/Button/Button.tsx";
 
-type FormDataType = {
-    taskText: string
+type AddElementFormProps = {
+    createElement: (text: { title: string }) => void;
 }
 
-export const AddTaskForm = () => {
-    const [createTask] = footerApi.useCreateTaskMutation()
+type FormDataType = {
+    text: string
+}
+
+export const AddElementForm = ({createElement}: AddElementFormProps) => {
     const {handleSubmit, control, reset} = useForm({
         defaultValues: {
-            taskText: "",
+            text: "",
         }
     })
 
     const onSubmit = (data: FormDataType) => {
-        createTask({title: data.taskText})
+        createElement({title: data.text})
         reset()
     }
 
@@ -24,7 +26,7 @@ export const AddTaskForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <Controller
-                    name={"taskText"}
+                    name={"text"}
                     control={control}
                     rules={{
                         required: true,

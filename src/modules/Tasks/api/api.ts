@@ -11,6 +11,20 @@ type EditTodoListType = {
     title: string
 }
 
+type TasksPortionResponse = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: Date
+    deadline: Date
+    id: string
+    todoListId: string
+    order: number
+    addedDate: Date
+}
+
 export const tasksAPI = baseApi.injectEndpoints({
     endpoints: (build) => ({
         fetchAllTodoLists: build.query<TodoListType[], void>({
@@ -52,7 +66,7 @@ export const tasksAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Task"]
         }),
-        getTasksPortions: build.query<void, string>({
+        getTasksPortion: build.query<TasksPortionResponse[], string>({
             query: (todoListId) => ({
                 url: `/todo-lists/${todoListId}/tasks`
             })

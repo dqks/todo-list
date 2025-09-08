@@ -1,10 +1,10 @@
 import classes from "./Footer.module.css"
-import { AddTaskForm } from "../AddTaskForm/AddTaskForm.tsx";
+import { AddTodoListForm } from "../AddTodoListForm/AddTodoListForm.tsx";
 
 export const Footer = () => {
     return (
         <footer className={classes.footerWrapper}>
-            <AddTaskForm/>
+            <AddTodoListForm/>
         </footer>
     )
 }

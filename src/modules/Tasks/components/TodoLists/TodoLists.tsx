@@ -52,8 +52,8 @@ export const TodoLists = () => {
                         <>
                             {editedTodoList &&
                                 <TodoListModal todoListTitle={editedTodoList.title} todoListId={editedTodoList.id}/>}
-                            {shownTasks && <TasksModal />}
-                            {todoLists?.map((list: TodoListType,
+                            {shownTasks && <TasksModal todoListId={shownTasks} />}
+                            {todoLists.map((list: TodoListType,
                                 index: number) => <TodoList
                                 onTodoListClick={todoListHandler}
                                 onEditClick={editClickHandler}
