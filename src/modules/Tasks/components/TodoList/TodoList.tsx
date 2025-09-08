@@ -14,6 +14,7 @@ type TodoListProps = {
         nextTask: TodoListType | null,
         taskIndex: number) => void
     onEditClick: (taskText: TodoListType) => void
+    onTodoListClick: (todoListId: string) => void
 }
 
 export const TodoList = memo(({
@@ -24,10 +25,11 @@ export const TodoList = memo(({
     previousTodoList,
     todoListIndex,
     onEditClick,
-    addedDate
+    addedDate,
+    onTodoListClick
 }: TodoListProps) => {
     return (
-        <div className={classes.todoListWrapper}>
+        <div onClick={() => onTodoListClick(id)} className={classes.todoListWrapper}>
             <div className={classes.buttonsWrapper}>
                 <Button onClick={(e) => {
                     e.stopPropagation()

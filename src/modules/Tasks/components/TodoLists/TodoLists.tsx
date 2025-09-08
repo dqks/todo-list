@@ -1,16 +1,18 @@
 import { TodoList } from "../TodoList/TodoList.tsx";
-import { todoListIsEdited, type TodoListType } from "../../store/slice.ts";
+import { tasksAreShown, todoListIsEdited, type TodoListType } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
 import { Preloader } from "../../../../ui/Preloader/Preloader.tsx";
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux.ts";
-import { getEditedTodoList } from "../../store/selectors.ts";
+import { getEditedTodoList, getShownTasksFromList } from "../../store/selectors.ts";
 import { TodoListModal } from "../TodoListModal/TodoListModal.tsx";
+import { TasksModal } from "../TasksModal/TasksModal.tsx";
 
 export const TodoLists = () => {
     const {data: todoLists, isFetching} = tasksAPI.useFetchAllTodoListsQuery()
     const [reorderTodoLists] = tasksAPI.useReorderTodoListMutation()
-    const selectedTodoList = useAppSelector(getEditedTodoList)
+    const editedTodoList = useAppSelector(getEditedTodoList)
+    const shownTasks = useAppSelector(getShownTasksFromList)
     const dispatch = useAppDispatch();
 
     //TODO починить
@@ -33,6 +35,11 @@ export const TodoLists = () => {
     const editClickHandler = useCallback((task: TodoListType) => {
         dispatch(todoListIsEdited(task))
     }, [dispatch])
+
+    const todoListHandler = useCallback((todoListId: string) => {
+        dispatch(tasksAreShown(todoListId))
+    }, [dispatch])
+
     //nextTodoList - стрелка вверх
     //previousTodoList - стрелка вниз
     return (
@@ -43,10 +50,12 @@ export const TodoLists = () => {
                     : todoLists?.length !== 0 && todoLists
                         ?
                         <>
-                            {selectedTodoList &&
-                                <TodoListModal todoListTitle={selectedTodoList.title} todoListId={selectedTodoList.id}/>}
+                            {editedTodoList &&
+                                <TodoListModal todoListTitle={editedTodoList.title} todoListId={editedTodoList.id}/>}
+                            {shownTasks && <TasksModal />}
                             {todoLists?.map((list: TodoListType,
                                 index: number) => <TodoList
+                                onTodoListClick={todoListHandler}
                                 onEditClick={editClickHandler}
                                 todoListIndex={index}
                                 previousTodoList={todoLists[index + 1]}

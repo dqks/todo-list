@@ -13,7 +13,7 @@ type TodoListModalProps = {
     todoListId: string;
 }
 
-const TodoListModelCSS = {
+const TodoListModalCSS = {
     width: "500px",
     height: "300px",
     justifyContent: "center",
@@ -53,7 +53,7 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
     }
 
     return (
-        <Modal contentStyle={TodoListModelCSS}>
+        <Modal contentStyle={TodoListModalCSS}>
             <form className={classes.formWrapper} onSubmit={handleSubmit(onSubmit)}>
                 <Button
                     style={{position: "relative", bottom: "40px", left: "260px"}}

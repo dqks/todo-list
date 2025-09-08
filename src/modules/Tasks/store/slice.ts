@@ -9,7 +9,7 @@ export type TodoListType = {
 
 type TodoListsInitialState = {
     editedTodoList: TodoListType | null
-    shownTasksFromList: TodoListType | null
+    shownTasksFromList: string | null
 }
 
 const initialState: TodoListsInitialState = {
@@ -24,11 +24,11 @@ export const todoListSlice = createSlice({
         todoListIsEdited: (state, action: PayloadAction<TodoListType | null>) => {
             state.editedTodoList = action.payload
         },
-        tasksAreShows: (state, action: PayloadAction<TodoListType | null>) => {
-            state.editedTodoList = action.payload
+        tasksAreShown: (state, action: PayloadAction<string | null>) => {
+            state.shownTasksFromList = action.payload
         }
     },
 })
 
-export const {todoListIsEdited, tasksAreShows} = todoListSlice.actions;
+export const {todoListIsEdited, tasksAreShown} = todoListSlice.actions;
 export const todoListReducer = todoListSlice.reducer
