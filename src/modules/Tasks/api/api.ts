@@ -6,12 +6,12 @@ type ReorderType = {
     putAfterItemId: string | null
 }
 
-type EditTodoListType = {
+type TodoAndTaskActionType = {
     todoListId: string
     title: string
 }
 
-type TasksPortionResponse = {
+type Task = {
     description: string
     title: string
     completed: boolean
@@ -25,20 +25,32 @@ type TasksPortionResponse = {
     addedDate: Date
 }
 
+type TasksPortionResponse = {
+    items: Task[]
+    totalCount: number
+    error: string
+}
+
+type CreateTaskResponse = {
+    data: { item: Task }
+    resultCode: number
+    messages: string[]
+}
+
 export const tasksAPI = baseApi.injectEndpoints({
     endpoints: (build) => ({
         fetchAllTodoLists: build.query<TodoListType[], void>({
             query: () => ({
                 url: "/todo-lists",
             }),
-            providesTags: () => ["Task"]
+            providesTags: () => ["Todo"]
         }),
         deleteTodoList: build.mutation<void, string>({
             query: (id: string) => ({
-                url: `/todo-lists/${id}` ,
+                url: `/todo-lists/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ["Task"]
+            invalidatesTags: ["Todo"]
         }),
         reorderTodoList: build.mutation<void, ReorderType>({
             query: ({
@@ -51,9 +63,9 @@ export const tasksAPI = baseApi.injectEndpoints({
                     putAfterItemId: putAfterItemId
                 }
             }),
-            invalidatesTags: ["Task"]
+            invalidatesTags: ["Todo"]
         }),
-        editTodoListTitle: build.mutation<void, EditTodoListType>({
+        editTodoListTitle: build.mutation<void, TodoAndTaskActionType>({
             query: ({
                 todoListId,
                 title,
@@ -64,12 +76,26 @@ export const tasksAPI = baseApi.injectEndpoints({
                     title,
                 }
             }),
-            invalidatesTags: ["Task"]
+            invalidatesTags: ["Todo"]
         }),
-        getTasksPortion: build.query<TasksPortionResponse[], string>({
+        getTasksPortion: build.query<TasksPortionResponse, string>({
             query: (todoListId) => ({
                 url: `/todo-lists/${todoListId}/tasks`
-            })
+            }),
+            providesTags: () => ["Task"]
+        }),
+        createTask: build.mutation<CreateTaskResponse, TodoAndTaskActionType>({
+            query: ({
+                title,
+                todoListId
+            }) => ({
+                url: `/todo-lists/${todoListId}/tasks`,
+                method: "POST",
+                body: {
+                    title
+                }
+            }),
+            invalidatesTags: ["Task"]
         })
     })
 })

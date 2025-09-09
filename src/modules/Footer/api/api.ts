@@ -1,15 +1,27 @@
 import { baseApi } from "../../../api";
-import type { TaskType } from "../../Tasks/store/slice.ts";
+
+type CreateTodoResponse = {
+    data: {
+        item: {
+            id: string
+            addedDate: Date
+            order: number
+            title: string
+        }
+    }
+    resultCode: number
+    messages: string[]
+}
 
 export const footerApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        createTask: build.mutation<TaskType, { title: string }>({
+        createTodo: build.mutation<CreateTodoResponse, { title: string }>({
             query: (string) => ({
                 url: "/todo-lists",
                 method: "POST",
                 body: string
             }),
-            invalidatesTags: ['Task']
+            invalidatesTags: ['Todo']
         })
     })
 })
