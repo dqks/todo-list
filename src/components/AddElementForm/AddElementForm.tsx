@@ -35,7 +35,7 @@ export const AddElementForm = ({createElement}: AddElementFormProps) => {
                         <Input type={"text"} {...field}/>
                     }/>
             </div>
-            <Button type="submit">Add</Button>
+            <Button type="submit">Add Task</Button>
         </form>
     )
 }

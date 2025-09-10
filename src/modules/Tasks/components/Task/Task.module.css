@@ -1,6 +1,10 @@
 .taskWrapper {
     border: 1px solid #460080;
     width: 600px;
+    margin: 5px 0;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    align-items: center;
 }
 
 .title {

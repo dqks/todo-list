@@ -32,23 +32,29 @@ export const TasksModal = ({todoListId}: TasksModalProps) => {
     return (
         <Modal contentStyle={TasksModalCSS}>
             <div className={classes.wrapper}>
-                <Button style={{position: "relative", bottom: "40px", left: "300px"}}
+                <Button style={{position: "relative", bottom: "40px", left: "420px"}}
                     onClick={onButtonClick}>
                     &#10006;
                 </Button>
-                <AddElementForm createElement={createTaskCb}/>
-                <h2>Tasks</h2>
-                <div className={classes.tasksWrapper}>
-                    {
-                        tasks?.items && tasks.items.length > 0
-                            ? tasks.items.map((task) => <Task
-                                key={task.id}
-                                id={task.id}
-                                title={task.title}
-                                description={task.description}
-                            />)
-                            : null
-                    }
+                <div className={classes.contentWrapper}>
+                    <div className={classes.formWrapper}>
+                        <AddElementForm createElement={createTaskCb}/>
+                        <Button style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
+                    </div>
+                    <div>
+                        <h2>Tasks</h2>
+                        <div className={classes.tasksWrapper}>
+                            {
+                                tasks?.items && tasks.items.length > 0
+                                    ? tasks.items.map((task) => <Task
+                                        key={task.id}
+                                        id={task.id}
+                                        title={task.title}
+                                    />)
+                                    : null
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </Modal>
