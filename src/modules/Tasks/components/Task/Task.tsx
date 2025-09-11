@@ -12,7 +12,7 @@ export const Task = ({id, title}: TaskType) => {
     return (
         <div className={classes.taskWrapper}>
             <div>
-                <input type="checkbox" onChange={(e) => {
+                <input className={classes.checkbox} type="checkbox" onChange={(e) => {
                     if (e.currentTarget.checked) {
                         dispatch(taskIsChecked(id))
                     } else {

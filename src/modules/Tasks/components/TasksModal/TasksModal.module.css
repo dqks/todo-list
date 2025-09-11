@@ -5,8 +5,13 @@
     gap: 10px;
 }
 
+.buttonWrapper {
+    width: 100%;
+    float: right;
+}
+
 .contentWrapper {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }

@@ -15,18 +15,17 @@ export const TodoLists = () => {
     const shownTasks = useAppSelector(getShownTasksFromList)
     const dispatch = useAppDispatch();
 
-    //TODO починить
-    const reorderTaskHandler = useCallback((id: string,
-        task: TodoListType | null,
+    const reorderTaskHandler = useCallback((todoListId: string,
+        taskId: string | null,
         taskIndex: number) => {
-        if (taskIndex !== 1 && task) {
+        if (taskIndex !== 1 && taskId) {
             reorderTodoLists({
-                todoListId: id,
-                putAfterItemId: task.id
+                todoListId,
+                putAfterItemId: taskId
             });
         } else if (taskIndex === 1) {
             reorderTodoLists({
-                todoListId: id,
+                todoListId,
                 putAfterItemId: null
             });
         }
@@ -58,8 +57,8 @@ export const TodoLists = () => {
                                 onTodoListClick={todoListHandler}
                                 onEditClick={editClickHandler}
                                 todoListIndex={index}
-                                previousTodoList={todoLists[index + 1]}
-                                nextTodoList={todoLists[index - 2]}
+                                previousTodoListId={todoLists[index + 1]?.id}
+                                nextTodoListId={todoLists[index - 2]?.id}
                                 id={list.id}
                                 title={list.title}
                                 key={list.id}

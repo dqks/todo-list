@@ -6,12 +6,12 @@ import type { TodoListType } from "../../store/slice.ts";
 type TodoListProps = {
     title: string
     id: string
-    nextTodoList: TodoListType
-    previousTodoList: TodoListType
+    nextTodoListId: string
+    previousTodoListId: string
     todoListIndex: number
     addedDate: Date
-    onArrowClick: (id: string,
-        nextTask: TodoListType | null,
+    onArrowClick: (todoListId: string,
+        taskId: string,
         taskIndex: number) => void
     onEditClick: (taskText: TodoListType) => void
     onTodoListClick: (todoListId: string) => void
@@ -21,8 +21,8 @@ export const TodoList = memo(({
     title,
     id,
     onArrowClick,
-    nextTodoList,
-    previousTodoList,
+    nextTodoListId,
+    previousTodoListId,
     todoListIndex,
     onEditClick,
     addedDate,
@@ -33,13 +33,13 @@ export const TodoList = memo(({
             <div className={classes.buttonsWrapper}>
                 <Button onClick={(e) => {
                     e.stopPropagation()
-                    onArrowClick(id, nextTodoList, todoListIndex)
+                    onArrowClick(id, nextTodoListId, todoListIndex)
                 }}>
                     &uarr;
                 </Button>
                 <Button onClick={(e) => {
                     e.stopPropagation()
-                    onArrowClick(id, previousTodoList, todoListIndex)
+                    onArrowClick(id, previousTodoListId, todoListIndex)
                 }}>
                     &darr;
                 </Button>

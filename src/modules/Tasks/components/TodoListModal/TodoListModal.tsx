@@ -1,12 +1,13 @@
 import { Modal } from "../../../../ui/Modal/Modal.tsx";
 import { Input } from "../../../../ui/Input/Input.tsx";
-import type { CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../../../../ui/Button/Button.tsx";
 import classes from "./TodoListModal.module.css"
 import { useAppDispatch } from "../../../../hooks/redux.ts";
 import { todoListIsEdited } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
+import { useCloseModal } from "../../hooks/useCloseModal.ts";
 
 type TodoListModalProps = {
     todoListTitle: string;
@@ -26,16 +27,16 @@ type FormDataType = {
 export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) => {
     const [editTodoList] = tasksAPI.useEditTodoListTitleMutation()
     const [deleteTodoList] = tasksAPI.useDeleteTodoListMutation()
+    const dispatch = useAppDispatch();
+
+    useCloseModal(() => todoListIsEdited(null))
 
     const {control, handleSubmit} = useForm({
         defaultValues: {
             todoListTitle: todoListTitle,
         }
     })
-    const dispatch = useAppDispatch();
-
     const onSubmit = (data: FormDataType) => {
-        console.log(data)
         editTodoList({
             todoListId: todoListId,
             title: data.todoListTitle,
