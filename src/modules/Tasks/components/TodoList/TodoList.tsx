@@ -11,8 +11,9 @@ type TodoListProps = {
     todoListIndex: number
     addedDate: Date
     onArrowClick: (todoListId: string,
-        taskId: string,
-        taskIndex: number) => void
+        putAfterItemId: string,
+        todoIndex: number,
+        isUp: boolean) => void
     onEditClick: (taskText: TodoListType) => void
     onTodoListClick: (todoListId: string) => void
 }
@@ -33,13 +34,13 @@ export const TodoList = memo(({
             <div className={classes.buttonsWrapper}>
                 <Button onClick={(e) => {
                     e.stopPropagation()
-                    onArrowClick(id, nextTodoListId, todoListIndex)
+                    onArrowClick(id, nextTodoListId, todoListIndex, true)
                 }}>
                     &uarr;
                 </Button>
                 <Button onClick={(e) => {
                     e.stopPropagation()
-                    onArrowClick(id, previousTodoListId, todoListIndex)
+                    onArrowClick(id, previousTodoListId, todoListIndex, false)
                 }}>
                     &darr;
                 </Button>

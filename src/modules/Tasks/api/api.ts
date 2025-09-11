@@ -42,10 +42,16 @@ type DeleteTaskQuery = {
     taskId: string
 }
 
-type DeleteTaskResponse = {
+type DeleteReorderTaskResponse = {
     data: object
     resultCode: number
     messages: string[]
+}
+
+type ReorderTaskQuery = {
+    todoListId: string,
+    taskId: string,
+    putAfterItemId: string | null
 }
 
 export const tasksAPI = baseApi.injectEndpoints({
@@ -108,13 +114,25 @@ export const tasksAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Task"]
         }),
-        deleteTask: build.mutation<DeleteTaskResponse, DeleteTaskQuery>({
+        deleteTask: build.mutation<DeleteReorderTaskResponse, DeleteTaskQuery>({
             query: ({
                 todoListId,
                 taskId
             }) => ({
                 url: `/todo-lists/${todoListId}/tasks/${taskId}`,
                 method: "DELETE"
+            }),
+            invalidatesTags: ["Task"]
+        }),
+        reorderTasks: build.mutation<DeleteReorderTaskResponse, ReorderTaskQuery>({
+            query: ({
+                todoListId,
+                taskId,
+                putAfterItemId
+            }) => ({
+                url: `/todo-lists/${todoListId}/tasks/${taskId}/reorder`,
+                method: "PUT",
+                body: {putAfterItemId}
             }),
             invalidatesTags: ["Task"]
         })

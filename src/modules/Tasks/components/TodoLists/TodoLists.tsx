@@ -15,21 +15,27 @@ export const TodoLists = () => {
     const shownTasks = useAppSelector(getShownTasksFromList)
     const dispatch = useAppDispatch();
 
-    const reorderTaskHandler = useCallback((todoListId: string,
-        taskId: string | null,
-        taskIndex: number) => {
-        if (taskIndex !== 1 && taskId) {
+    const reorderTodoHandler = useCallback((todoListId: string,
+        putAfterItemId: string | null,
+        todoIndex: number,
+        isUp: boolean) => {
+        if (todoIndex !== 1 && putAfterItemId) {
             reorderTodoLists({
                 todoListId,
-                putAfterItemId: taskId
+                putAfterItemId
             });
-        } else if (taskIndex === 1) {
+        } else if (todoIndex === 1 && isUp) {
             reorderTodoLists({
                 todoListId,
                 putAfterItemId: null
-            });
+            })
+        } else if (todoIndex === 1 && !isUp && todoLists?.length !== 2) {
+            reorderTodoLists({
+                todoListId,
+                putAfterItemId
+            })
         }
-    }, [reorderTodoLists])
+    }, [reorderTodoLists, todoLists])
 
     const editClickHandler = useCallback((task: TodoListType) => {
         dispatch(todoListIsEdited(task))
@@ -63,7 +69,7 @@ export const TodoLists = () => {
                                 title={list.title}
                                 key={list.id}
                                 addedDate={list.addedDate}
-                                onArrowClick={reorderTaskHandler}
+                                onArrowClick={reorderTodoHandler}
                             />)}
                         </>
                         : <h2> There are no TODO lists ... yet</h2>

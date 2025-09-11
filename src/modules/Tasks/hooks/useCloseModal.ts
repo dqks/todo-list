@@ -7,7 +7,6 @@ export const useCloseModal = (callback: () => UnknownAction) => {
 
     useEffect(() => {
         const clickHandler = (e: KeyboardEvent) => {
-            console.log(e.code)
             if (e.code === "Escape") {
                 dispatch(callback())
             }

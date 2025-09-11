@@ -22,6 +22,7 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
     const {data: tasks} = tasksAPI.useGetTasksPortionQuery(todoListId)
     const [createTask] = tasksAPI.useCreateTaskMutation()
     const [deleteTasks] = tasksAPI.useDeleteTaskMutation()
+    const [reorderTasks] = tasksAPI.useReorderTasksMutation()
     const checkedTasks = useAppSelector(getCheckedTasks)
     const dispatch = useAppDispatch()
 
@@ -30,6 +31,32 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
     const createTaskCb = useCallback((title: { title: string }) => {
         createTask({todoListId, ...title})
     }, [createTask, todoListId])
+
+    const reorderTasksHandler = useCallback((
+        putAfterItemId: string | null,
+        taskIndex: number,
+        taskId: string,
+        isUp: boolean) => {
+        if (taskIndex !== 1 && putAfterItemId) {
+            reorderTasks({
+                todoListId,
+                taskId,
+                putAfterItemId
+            });
+        } else if (taskIndex === 1 && isUp) {
+            reorderTasks({
+                todoListId,
+                taskId,
+                putAfterItemId: null
+            })
+        } else if (taskIndex === 1 && !isUp && tasks?.items.length !== 2) {
+            reorderTasks({
+                todoListId,
+                taskId,
+                putAfterItemId
+            })
+        }
+    }, [reorderTasks, todoListId])
 
     const onButtonClick = () => {
         dispatch(tasksAreShown(null))
@@ -54,17 +81,26 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                 <div className={classes.contentWrapper}>
                     <div className={classes.formWrapper}>
                         <AddElementForm createElement={createTaskCb}/>
-                        <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
+                        {
+                            tasks?.items && tasks.items.length > 0
+                                ? <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
+                                : null
+                        }
                     </div>
                     {
                         tasks?.items && tasks.items.length > 0
                             ?
                             <div className={classes.tasksWrapper}>
                                 {
-                                    tasks.items.map((task) => <Task
+                                    tasks.items.map((task, index : number) => <Task
                                         key={task.id}
                                         id={task.id}
-                                        title={task.title}/>)
+                                        title={task.title}
+                                        reorderTasksHandler={reorderTasksHandler}
+                                        previousTaskId={tasks.items[index + 1]?.id}
+                                        nextTodoTaskId={tasks.items[index - 2]?.id}
+                                        taskIndex={index}
+                                    />)
                                 }
                             </div>
                             : null

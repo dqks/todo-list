@@ -29,7 +29,7 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
     const [deleteTodoList] = tasksAPI.useDeleteTodoListMutation()
     const dispatch = useAppDispatch();
 
-    useCloseModal(() => todoListIsEdited(null))
+    useCloseModal(() => todoListIsEdited (null))
 
     const {control, handleSubmit} = useForm({
         defaultValues: {
