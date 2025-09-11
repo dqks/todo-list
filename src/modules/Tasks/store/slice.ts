@@ -11,11 +11,13 @@ type TodoListsInitialState = {
     editedTodoList: TodoListType | null
     //id from todolist
     shownTasksFromList: string | null
+    checkedTasks: string[]
 }
 
 const initialState: TodoListsInitialState = {
     editedTodoList: null,
-    shownTasksFromList: null
+    shownTasksFromList: null,
+    checkedTasks: []
 }
 
 export const todoListSlice = createSlice({
@@ -27,9 +29,15 @@ export const todoListSlice = createSlice({
         },
         tasksAreShown: (state, action: PayloadAction<string | null>) => {
             state.shownTasksFromList = action.payload
+        },
+        taskIsChecked: (state, action: PayloadAction<string>) => {
+            state.checkedTasks.push(action.payload)
+        },
+        taskIsUnchecked: (state, action: PayloadAction<string>) => {
+            state.checkedTasks = state.checkedTasks.filter(id => id !== action.payload)
         }
     },
 })
 
-export const {todoListIsEdited, tasksAreShown} = todoListSlice.actions;
+export const {todoListIsEdited, tasksAreShown, taskIsChecked, taskIsUnchecked} = todoListSlice.actions;
 export const todoListReducer = todoListSlice.reducer

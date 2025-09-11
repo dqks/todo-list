@@ -1,12 +1,13 @@
 import { Modal } from "../../../../ui/Modal/Modal.tsx";
 import classes from "./TasksModal.module.css"
 import { Button } from "../../../../ui/Button/Button.tsx";
-import { useAppDispatch } from "../../../../hooks/redux.ts";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux.ts";
 import { tasksAreShown } from "../../store/slice.ts";
 import { type CSSProperties, useCallback } from "react";
 import { tasksAPI } from "../../api/api.ts";
 import { Task } from "../Task/Task.tsx";
 import { AddElementForm } from "../../../../components/AddElementForm/AddElementForm.tsx";
+import { getCheckedTasks } from "../../store/selectors.ts";
 
 const TasksModalCSS = {
     justifyContent: "center",
@@ -19,6 +20,8 @@ type TasksModalProps = {
 export const TasksModal = ({todoListId}: TasksModalProps) => {
     const {data: tasks} = tasksAPI.useGetTasksPortionQuery(todoListId)
     const [createTask] = tasksAPI.useCreateTaskMutation()
+    const [deleteTasks] = tasksAPI.useDeleteTaskMutation()
+    const checkedTasks = useAppSelector(getCheckedTasks)
 
     const createTaskCb = useCallback((title: { title: string }) => {
         createTask({todoListId, ...title})
@@ -27,6 +30,14 @@ export const TasksModal = ({todoListId}: TasksModalProps) => {
     const dispatch = useAppDispatch()
     const onButtonClick = () => {
         dispatch(tasksAreShown(null))
+    }
+
+    const onDeleteClick = () => {
+        if (checkedTasks.length > 0) {
+            for (const taskId of checkedTasks) {
+                deleteTasks({todoListId, taskId})
+            }
+        }
     }
 
     return (
@@ -39,7 +50,7 @@ export const TasksModal = ({todoListId}: TasksModalProps) => {
                 <div className={classes.contentWrapper}>
                     <div className={classes.formWrapper}>
                         <AddElementForm createElement={createTaskCb}/>
-                        <Button style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
+                        <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
                     </div>
                     <div>
                         <h2>Tasks</h2>

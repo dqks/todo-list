@@ -37,6 +37,17 @@ type CreateTaskResponse = {
     messages: string[]
 }
 
+type DeleteTaskQuery = {
+    todoListId: string
+    taskId: string
+}
+
+type DeleteTaskResponse = {
+    data: object
+    resultCode: number
+    messages: string[]
+}
+
 export const tasksAPI = baseApi.injectEndpoints({
     endpoints: (build) => ({
         fetchAllTodoLists: build.query<TodoListType[], void>({
@@ -94,6 +105,16 @@ export const tasksAPI = baseApi.injectEndpoints({
                 body: {
                     title
                 }
+            }),
+            invalidatesTags: ["Task"]
+        }),
+        deleteTask: build.mutation<DeleteTaskResponse, DeleteTaskQuery>({
+            query: ({
+                todoListId,
+                taskId
+            }) => ({
+                url: `/todo-lists/${todoListId}/tasks/${taskId}`,
+                method: "DELETE"
             }),
             invalidatesTags: ["Task"]
         })
