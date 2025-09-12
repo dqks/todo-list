@@ -7,7 +7,7 @@ export const Footer = () => {
 
     return (
         <footer className={classes.footerWrapper}>
-            <AddElementForm createElement={createTodo}/>
+            <AddElementForm buttonText="Add TODO" createElement={createTodo}/>
         </footer>
     )
 }

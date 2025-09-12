@@ -4,13 +4,14 @@ import { Button } from "../../ui/Button/Button.tsx";
 
 type AddElementFormProps = {
     createElement: (text: { title: string }) => void;
+    buttonText: string
 }
 
 type FormDataType = {
     text: string
 }
 
-export const AddElementForm = ({createElement}: AddElementFormProps) => {
+export const AddElementForm = ({createElement, buttonText}: AddElementFormProps) => {
     const {handleSubmit, control, reset} = useForm({
         defaultValues: {
             text: "",
@@ -35,7 +36,7 @@ export const AddElementForm = ({createElement}: AddElementFormProps) => {
                         <Input type={"text"} {...field}/>
                     }/>
             </div>
-            <Button type="submit">Add Task</Button>
+            <Button type="submit">{buttonText}</Button>
         </form>
     )
 }

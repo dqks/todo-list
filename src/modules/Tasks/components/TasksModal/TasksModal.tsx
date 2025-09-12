@@ -2,7 +2,7 @@ import { Modal } from "../../../../ui/Modal/Modal.tsx";
 import classes from "./TasksModal.module.css"
 import { Button } from "../../../../ui/Button/Button.tsx";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux.ts";
-import { tasksAreShown } from "../../store/slice.ts";
+import { taskIsUnchecked, tasksAreShown } from "../../store/slice.ts";
 import { type CSSProperties, memo, useCallback } from "react";
 import { tasksAPI } from "../../api/api.ts";
 import { Task } from "../Task/Task.tsx";
@@ -66,9 +66,12 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
         if (checkedTasks.length > 0) {
             for (const taskId of checkedTasks) {
                 deleteTasks({todoListId, taskId})
+                dispatch(taskIsUnchecked(taskId))
             }
         }
     }
+
+    const areThereAnyTasks = tasks?.items && tasks.items.length > 0;
 
     return (
         <Modal contentStyle={TasksModalCSS}>
@@ -80,19 +83,20 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                 </div>
                 <div className={classes.contentWrapper}>
                     <div className={classes.formWrapper}>
-                        <AddElementForm createElement={createTaskCb}/>
+                        <AddElementForm buttonText={"Add Task"} createElement={createTaskCb}/>
                         {
-                            tasks?.items && tasks.items.length > 0
+                            areThereAnyTasks
                                 ? <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
                                 : null
                         }
                     </div>
                     {
-                        tasks?.items && tasks.items.length > 0
+                        areThereAnyTasks
                             ?
                             <div className={classes.tasksWrapper}>
                                 {
-                                    tasks.items.map((task, index : number) => <Task
+                                    tasks.items.map((task,
+                                        index: number) => <Task
                                         key={task.id}
                                         id={task.id}
                                         title={task.title}
