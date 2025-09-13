@@ -25,7 +25,6 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
     const [reorderTasks] = tasksAPI.useReorderTasksMutation()
     const checkedTasks = useAppSelector(getCheckedTasks)
     const dispatch = useAppDispatch()
-
     useCloseModal(() => tasksAreShown(null))
 
     const createTaskCb = useCallback((title: { title: string }) => {
@@ -56,7 +55,7 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                 putAfterItemId
             })
         }
-    }, [reorderTasks, todoListId])
+    }, [reorderTasks, todoListId, tasks?.items.length])
 
     const closeModalHandler = () => {
         dispatch(tasksAreShown(null))
@@ -72,8 +71,6 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
     }
 
     const areThereAnyTasks = tasks?.items && tasks.items.length > 0;
-
-
 
     return (
         <Modal onOutsideClick={closeModalHandler} contentStyle={TasksModalCSS}>
@@ -100,7 +97,9 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                                         key={task.id}
                                         id={task.id}
                                         title={task.title}
+                                        // todoListId={todoListId}
                                         reorderTasksHandler={reorderTasksHandler}
+                                        // tasksLength={tasks.items.length}
                                         previousTaskId={tasks.items[index + 1]?.id}
                                         nextTodoTaskId={tasks.items[index - 2]?.id}
                                         taskIndex={index}

@@ -1,19 +1,18 @@
 import { TodoList } from "../TodoList/TodoList.tsx";
-import { tasksAreShown, todoListIsEdited, type TodoListType } from "../../store/slice.ts";
+import { type TodoListType } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux.ts";
+import { useAppSelector } from "../../../../hooks/redux.ts";
 import { getEditedTodoList, getShownTasksFromList } from "../../store/selectors.ts";
 import { TodoListModal } from "../TodoListModal/TodoListModal.tsx";
 import { TasksModal } from "../TasksModal/TasksModal.tsx";
 import { PreloaderWrapper } from "../../../../components/PreloaderWrapper/PreloaderWrapper.tsx";
 
 export const TodoLists = () => {
-    const {data: todoLists, isFetching} = tasksAPI.useFetchAllTodoListsQuery()
+    const {data: todoLists, isLoading} = tasksAPI.useFetchAllTodoListsQuery()
     const [reorderTodoLists] = tasksAPI.useReorderTodoListMutation()
     const editedTodoList = useAppSelector(getEditedTodoList)
     const shownTasks = useAppSelector(getShownTasksFromList)
-    const dispatch = useAppDispatch();
 
     const reorderTodoHandler = useCallback((todoListId: string,
         putAfterItemId: string | null,
@@ -35,21 +34,13 @@ export const TodoLists = () => {
                 putAfterItemId
             })
         }
-    }, [reorderTodoLists, todoLists])
-
-    const editClickHandler = useCallback((task: TodoListType) => {
-        dispatch(todoListIsEdited(task))
-    }, [dispatch])
-
-    const todoListHandler = useCallback((todoListId: string) => {
-        dispatch(tasksAreShown(todoListId))
-    }, [dispatch])
+    }, [reorderTodoLists, todoLists?.length])
 
     //nextTodoList - стрелка вверх
     //previousTodoList - стрелка вниз
     return (
         <div>
-            <PreloaderWrapper preloaderStyle={{width: "100px", height: "100px"}} isFetching={isFetching}>
+            <PreloaderWrapper preloaderStyle={{width: "100px", height: "100px"}} isFetching={isLoading}>
                 {
                     todoLists && todoLists.length !== 0
                         ? <>
@@ -58,8 +49,6 @@ export const TodoLists = () => {
                             {shownTasks && <TasksModal todoListId={shownTasks}/>}
                             {todoLists.map((list: TodoListType,
                                 index: number) => <TodoList
-                                onTodoListClick={todoListHandler}
-                                onEditClick={editClickHandler}
                                 todoListIndex={index}
                                 previousTodoListId={todoLists[index + 1]?.id}
                                 nextTodoListId={todoLists[index - 2]?.id}

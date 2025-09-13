@@ -1,7 +1,8 @@
 import { Button } from "../../../../ui/Button/Button.tsx";
 import classes from "./TodoList.module.css"
 import { memo } from "react";
-import type { TodoListType } from "../../store/slice.ts";
+import { tasksAreShown, todoListIsEdited, type TodoListType } from "../../store/slice.ts";
+import { useAppDispatch } from "../../../../hooks/redux.ts";
 
 type TodoListProps = {
     title: string
@@ -14,8 +15,8 @@ type TodoListProps = {
         putAfterItemId: string,
         todoIndex: number,
         isUp: boolean) => void
-    onEditClick: (taskText: TodoListType) => void
-    onTodoListClick: (todoListId: string) => void
+    // onEditClick: (taskText: TodoListType) => void
+    // onTodoListClick: (todoListId: string) => void
 }
 
 export const TodoList = memo(({
@@ -25,12 +26,19 @@ export const TodoList = memo(({
     nextTodoListId,
     previousTodoListId,
     todoListIndex,
-    onEditClick,
     addedDate,
-    onTodoListClick
 }: TodoListProps) => {
+    const dispatch = useAppDispatch()
+    const editClickHandler = (task: TodoListType) => {
+        dispatch(todoListIsEdited(task))
+    }
+
+    const todoListHandler = (todoListId: string) => {
+        dispatch(tasksAreShown(todoListId))
+    }
+
     return (
-        <div onClick={() => onTodoListClick(id)} className={classes.todoListWrapper}>
+        <div onClick={() => todoListHandler(id)} className={classes.todoListWrapper}>
             <div className={classes.buttonsWrapper}>
                 <Button onClick={(e) => {
                     e.stopPropagation()
@@ -50,7 +58,7 @@ export const TodoList = memo(({
                 <Button
                     onClick={(e) => {
                         e.stopPropagation()
-                        onEditClick({id, addedDate, order: 1, title} as TodoListType)
+                        editClickHandler({id, addedDate, order: 1, title} as TodoListType)
                     }}>
                     Edit
                 </Button>

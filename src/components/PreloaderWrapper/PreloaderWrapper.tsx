@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { type CSSProperties, type ReactNode } from "react";
 import { Preloader } from "../../ui/Preloader/Preloader.tsx";
 
 type PreloaderWrapperProps = {

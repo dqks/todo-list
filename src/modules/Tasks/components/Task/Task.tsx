@@ -16,7 +16,7 @@ type TaskType = {
         isUp: boolean) => void
 }
 
-export const Task = memo(({id, title, reorderTasksHandler, previousTaskId, nextTodoTaskId, taskIndex}: TaskType) => {
+export const Task = memo(({id, title, previousTaskId, nextTodoTaskId, taskIndex, reorderTasksHandler}: TaskType) => {
     const dispatch = useAppDispatch();
     return (
         <div className={classes.taskWrapper}>
