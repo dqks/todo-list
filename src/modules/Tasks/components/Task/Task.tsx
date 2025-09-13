@@ -2,6 +2,7 @@ import classes from "./Task.module.css"
 import { useAppDispatch } from "../../../../hooks/redux.ts";
 import { taskIsChecked, taskIsUnchecked } from "../../store/slice.ts";
 import { Button } from "../../../../ui/Button/Button.tsx";
+import { memo } from "react";
 
 type TaskType = {
     id: string
@@ -15,7 +16,7 @@ type TaskType = {
         isUp: boolean) => void
 }
 
-export const Task = ({id, title, reorderTasksHandler, previousTaskId, nextTodoTaskId, taskIndex}: TaskType) => {
+export const Task = memo(({id, title, reorderTasksHandler, previousTaskId, nextTodoTaskId, taskIndex}: TaskType) => {
     const dispatch = useAppDispatch();
     return (
         <div className={classes.taskWrapper}>
@@ -50,4 +51,4 @@ export const Task = ({id, title, reorderTasksHandler, previousTaskId, nextTodoTa
             </div>
         </div>
     )
-}
+})

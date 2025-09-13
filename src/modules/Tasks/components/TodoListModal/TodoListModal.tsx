@@ -44,7 +44,7 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
         dispatch(todoListIsEdited(null))
     }
 
-    const onButtonClick = () => {
+    const closeModalHandler = () => {
         dispatch(todoListIsEdited(null))
     }
 
@@ -54,11 +54,11 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
     }
 
     return (
-        <Modal contentStyle={TodoListModalCSS}>
+        <Modal onOutsideClick={closeModalHandler} contentStyle={TodoListModalCSS}>
             <form className={classes.formWrapper} onSubmit={handleSubmit(onSubmit)}>
                 <Button
                     style={{position: "relative", bottom: "40px", left: "260px"}}
-                    onClick={onButtonClick}
+                    onClick={closeModalHandler}
                 >
                     &#10006;
                 </Button>

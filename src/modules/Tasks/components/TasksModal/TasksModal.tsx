@@ -58,7 +58,7 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
         }
     }, [reorderTasks, todoListId])
 
-    const onButtonClick = () => {
+    const closeModalHandler = () => {
         dispatch(tasksAreShown(null))
     }
 
@@ -73,11 +73,13 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
 
     const areThereAnyTasks = tasks?.items && tasks.items.length > 0;
 
+
+
     return (
-        <Modal contentStyle={TasksModalCSS}>
+        <Modal onOutsideClick={closeModalHandler} contentStyle={TasksModalCSS}>
             <div className={classes.wrapper}>
                 <div className={classes.buttonWrapper}>
-                    <Button style={{float: "right"}} onClick={onButtonClick}>
+                    <Button style={{float: "right"}} onClick={closeModalHandler}>
                         &#10006;
                     </Button>
                 </div>
@@ -86,13 +88,11 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                         <AddElementForm buttonText={"Add Task"} createElement={createTaskCb}/>
                         {
                             areThereAnyTasks
-                                ? <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
-                                : null
+                                && <Button onClick={onDeleteClick} style={{margin: "5px 0"}}>Delete Chosen Tasks</Button>
                         }
                     </div>
                     {
-                        areThereAnyTasks
-                            ?
+                        areThereAnyTasks &&
                             <div className={classes.tasksWrapper}>
                                 {
                                     tasks.items.map((task,
@@ -107,7 +107,6 @@ export const TasksModal = memo(({todoListId}: TasksModalProps) => {
                                     />)
                                 }
                             </div>
-                            : null
                     }
                 </div>
             </div>
