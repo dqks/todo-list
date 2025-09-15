@@ -11,6 +11,6 @@ export const baseApi = createApi({
         },
         credentials: "include"
     }),
-    tagTypes: ['Todo', 'Auth', "Task"],
+    tagTypes: ['Todo', 'Auth', "Task", "CaptchaIsRequired"],
     endpoints: () => ({})
 })

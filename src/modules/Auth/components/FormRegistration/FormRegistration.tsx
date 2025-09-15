@@ -2,11 +2,16 @@ import classes from "./FormRegistration.module.css"
 import { Button } from "../../../../ui/Button/Button.tsx";
 import { Input } from "../../../../ui/Input/Input.tsx";
 import { Controller, useForm } from "react-hook-form";
-import { authAPI, type LoginRequest } from "../../api/api.ts";
-import { useSelector } from "react-redux";
-import { getCaptchaUrl } from "../../store/selectors.ts";
-import { useAppDispatch } from "../../../../hooks/redux.ts";
-import { getCaptcha } from "../../store/slice.ts";
+import { authAPI } from "../../api/api.ts";
+import { useState } from "react";
+
+type DefaultValues = {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+    captcha: string;
+    generalError: string;
+}
 
 export const FormRegistration = () => {
     const {
@@ -21,18 +26,28 @@ export const FormRegistration = () => {
             rememberMe: false,
             captcha: "",
             generalError: ""
-        }})
+        }
+    })
     const [login] = authAPI.useLoginMutation()
-    const captchaUrl = useSelector(getCaptchaUrl)
-    const dispatch = useAppDispatch();
+    const [skip, setSkip] = useState(true);
+    const {data: captcha, } = authAPI.useGetCaptchaQuery(undefined, {skip})
 
-    const onSubmit = (data: LoginRequest) => {
-        login(data).then((response) => {
-            if (response.data?.resultCode === 10) {
-                dispatch(getCaptcha())
-            } else if (response.data?.resultCode === 1) {
+    const onSubmit = (data: DefaultValues) => {
+        const payload = {
+            email: data.email,
+            password: data.password,
+            rememberMe: data.rememberMe,
+            captcha: data.captcha,
+        }
+        console.log(
+            captcha
+        )
+        login(payload).then(response => {
+            if (response.data?.resultCode === 1) {
                 setError("generalError",
                     {type: "server", message: response.data?.messages.join("/n")})
+            } else if (response.data?.resultCode === 10) {
+                setSkip(false);
             }
         })
     }
@@ -75,9 +90,9 @@ export const FormRegistration = () => {
                         <Input {...field} id={"rememberMe"} type={"checkbox"}/>
                     }/>
             </div>
-            {captchaUrl && (
+            {captcha?.url && (
                 <div className={classes.captchaWrapper}>
-                    <img className={classes.captchaImg} src={captchaUrl} alt="Captcha Image"/>
+                    <img className={classes.captchaImg} src={captcha?.url} alt="Captcha Image"/>
                     <Controller
                         control={control}
                         name={"captcha"}

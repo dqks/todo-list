@@ -33,6 +33,12 @@ export const authAPI = baseApi.injectEndpoints({
             }),
             providesTags: () => ["Auth"]
         }),
+        getCaptcha: build.query<{ url: string }, void>({
+            query: () => ({
+                url: "/security/get-captcha-url"
+            }),
+            providesTags: () => ["CaptchaIsRequired"]
+        }),
         login: build.mutation<LoginResponse, LoginRequest>({
             query: ({
                 email,
@@ -49,9 +55,16 @@ export const authAPI = baseApi.injectEndpoints({
                     captcha
                 }
             }),
-            //плохая практика, нужно не делать запрос при каждой попытки логина,
-            // но за неимением других идей пока что так
-            invalidatesTags: ["Auth", "Task"]
+            invalidatesTags: (result) => {
+                if (result?.resultCode === 0) {
+                    return ["Auth"]
+                } else if (result?.resultCode === 10) {
+                    console.log("CAPTCHA IS REQUIRED")
+                    return ["CaptchaIsRequired"]
+                } else {
+                    return [];
+                }
+            }
         }),
         logout: build.mutation<void, void>({
             query: () => ({
