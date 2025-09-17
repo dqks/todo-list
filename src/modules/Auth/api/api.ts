@@ -57,9 +57,8 @@ export const authAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: (result) => {
                 if (result?.resultCode === 0) {
-                    return ["Auth"]
+                    return ["Auth", "Todo"]
                 } else if (result?.resultCode === 10) {
-                    console.log("CAPTCHA IS REQUIRED")
                     return ["CaptchaIsRequired"]
                 } else {
                     return [];

@@ -39,9 +39,6 @@ export const FormRegistration = () => {
             rememberMe: data.rememberMe,
             captcha: data.captcha,
         }
-        console.log(
-            captcha
-        )
         login(payload).then(response => {
             if (response.data?.resultCode === 1) {
                 setError("generalError",
