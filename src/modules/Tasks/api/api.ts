@@ -54,6 +54,12 @@ type ReorderTaskQuery = {
     putAfterItemId: string | null
 }
 
+type GetTaskPortionQuery = {
+    todoListId: string
+    count: number
+    page: number
+}
+
 export const tasksAPI = baseApi.injectEndpoints({
     endpoints: (build) => ({
         fetchAllTodoLists: build.query<TodoListType[], void>({
@@ -95,9 +101,9 @@ export const tasksAPI = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["Todo"]
         }),
-        getTasksPortion: build.query<TasksPortionResponse, string>({
-            query: (todoListId) => ({
-                url: `/todo-lists/${todoListId}/tasks`
+        getTasksPortion: build.query<TasksPortionResponse, GetTaskPortionQuery>({
+            query: ({todoListId, count, page}) => ({
+                url: `/todo-lists/${todoListId}/tasks?count=${count}&page=${page}`
             }),
             providesTags: () => ["Task"]
         }),

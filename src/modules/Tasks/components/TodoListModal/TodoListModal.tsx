@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../../../hooks/redux.ts";
 import { todoListIsEdited } from "../../store/slice.ts";
 import { tasksAPI } from "../../api/api.ts";
 import { useCloseModal } from "../../hooks/useCloseModal.ts";
+import { useNavigate } from "react-router";
 
 type TodoListModalProps = {
     todoListTitle: string;
@@ -29,6 +30,8 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
     const [deleteTodoList] = tasksAPI.useDeleteTodoListMutation()
     const dispatch = useAppDispatch();
 
+    const navigation = useNavigate();
+
     useCloseModal(() => todoListIsEdited (null))
 
     const {control, handleSubmit} = useForm({
@@ -42,26 +45,23 @@ export const TodoListModal = ({todoListTitle, todoListId}: TodoListModalProps) =
             title: data.todoListTitle,
         })
         dispatch(todoListIsEdited(null))
+        navigation("")
     }
 
     const closeModalHandler = () => {
         dispatch(todoListIsEdited(null))
+        navigation("")
     }
 
     const onDeleteClick = () => {
         deleteTodoList(todoListId)
         dispatch(todoListIsEdited(null))
+        navigation("")
     }
 
     return (
         <Modal onOutsideClick={closeModalHandler} contentStyle={TodoListModalCSS}>
             <form className={classes.formWrapper} onSubmit={handleSubmit(onSubmit)}>
-                <Button
-                    style={{position: "relative", bottom: "40px", left: "260px"}}
-                    onClick={closeModalHandler}
-                >
-                    &#10006;
-                </Button>
                 <h1>Edit TODO List</h1>
                 <Controller
                     name={"todoListTitle"}

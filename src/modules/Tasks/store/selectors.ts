@@ -5,3 +5,5 @@ export const getEditedTodoList = (state: RootState) => state.todoListReducer.edi
 export const getShownTasksFromList = (state: RootState) => state.todoListReducer.shownTasksFromList
 
 export const getCheckedTasks = (state: RootState) => state.todoListReducer.checkedTasks
+
+export const getCurrentPage = (state: RootState) => state.todoListReducer.currentPage

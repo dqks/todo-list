@@ -1,0 +1,16 @@
+.wrapper {
+    margin: 20px 0;
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageNumber {
+    font-size: 24px;
+}
+
+.selectedPage {
+    font-weight: bold;
+    text-decoration: underline;
+}
